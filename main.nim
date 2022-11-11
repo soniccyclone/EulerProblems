@@ -13,6 +13,73 @@ proc limitedFib(limit: int): seq[int] =
     if current > limit:
       return
     result.add(current)
-    
+
+# Adapted (copy and pasted with some nimthonic edits) from Smitha's Python solution: https://www.geeksforgeeks.org/sieve-of-atkin/
+proc sieveOfAtkin(limit: int): seq[int] =
+  if limit > 2:
+    result.add(2)
+  if limit > 3:
+    result.add(3)
+
+  var sieve = newSeq[bool](limit+1)
+
+  #[Mark sieve[n] is True if
+    one of the following is True:
+    a) n = (4*x*x)+(y*y) has odd
+    number of solutions, i.e.,
+    there exist odd number of
+    distinct pairs (x, y) that
+    satisfy the equation and
+    n % 12 = 1 or n % 12 = 5.
+    b) n = (3*x*x)+(y*y) has
+    odd number of solutions
+    and n % 12 = 7
+    c) n = (3*x*x)-(y*y) has
+    odd number of solutions,
+    x > y and n % 12 = 11 ]#
+  var x = 1
+  while x * x <= limit:
+    var y = 1
+    while y * y <= limit:
+      # Main part of
+      # Sieve of Atkin
+      var n = (4 * x * x) + (y * y)
+      if (n <= limit and (n mod 12 == 1 or
+                          n mod 12 == 5)):
+        sieve[n] = sieve[n] xor true
+
+      n = (3 * x * x) + (y * y)
+      if n <= limit and n mod 12 == 7:
+        sieve[n] = sieve[n] xor true
+
+      n = (3 * x * x) - (y * y)
+      if (x > y and n <= limit and
+              n mod 12 == 11):
+        sieve[n] = sieve[n] xor true
+      y += 1
+    x += 1
+  
+  # Mark all multiples of
+  # squares as non-prime
+  var r = 5
+  while r * r <= limit:
+    if sieve[r]:
+      for i in countup(r * r, limit, r * r):
+        sieve[i] = false
+    r += 1
+
+  # Add the rest of the primes
+  for a in 5..limit:
+    if sieve[a]:
+      result.add(a)
+
+#[ Got an idea for a hopefully more code centric sieve of atkin using types
+type
+  primal* = ref object
+    isPrime*: bool
+    value*: int
+]#
+
 echo "Problem 1, Multiples of 3 or 5: ", basedSum(@[3, 5], toSeq(0..1000 - 1))
 echo "Problem 2, Even Fibonacci numbers: ", basedSum(@[2], limitedFib(int(4e6)))
+echo sieveOfAtkin(13195)
