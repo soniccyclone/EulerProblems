@@ -1,5 +1,6 @@
 import std/sequtils
 import std/sugar
+import std/math
   
 proc basedSum(bases: seq[int], collection: seq[int]): int =
   return collection
@@ -80,6 +81,29 @@ type
     value*: int
 ]#
 
+# A function to print all prime factors of
+# a given number n
+proc primeFactors(target: int64): seq[int64] =
+  var n = target
+  # Print the number of two's that divide n
+  while n mod 2 == 0:
+    result.add(2)
+    n = int64(float64(n) / 2)
+         
+    # n must be odd at this point
+    # so a skip of 2 ( i = i + 2) can be used
+  let step = int64(sqrt(float64(n))) + 1
+  for i in countup(int64(3), step, int64(2)):
+    # while i divides n , print i and divide n
+    while n mod i == 0:
+      result.add(i)
+      n = int64(float64(n) / float64(i))
+           
+  # Condition if n is a prime
+  # number greater than 2
+  if n > 2:
+    result.add(n)
+
 echo "Problem 1, Multiples of 3 or 5: ", basedSum(@[3, 5], toSeq(0..1000 - 1))
 echo "Problem 2, Even Fibonacci numbers: ", basedSum(@[2], limitedFib(int(4e6)))
-echo sieveOfAtkin(13195)
+echo "Problem 3, Largest prime factor: ", max(primeFactors(600851475143))
