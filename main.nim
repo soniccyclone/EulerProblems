@@ -4,7 +4,9 @@ import std/math
   
 proc basedSum(bases: seq[int], collection: seq[int]): int =
   return collection
-        .filter(num => bases.any(base => num mod base == 0))
+        .filter(num =>
+                bases.any(base =>
+                          num mod base == 0))
         .foldl(a + b, 0)
 
 proc limitedFib(limit: int): seq[int] =
@@ -74,13 +76,7 @@ proc sieveOfAtkin(limit: int): seq[int] =
     if sieve[a]:
       result.add(a)
 
-#[ Got an idea for a hopefully more code centric sieve of atkin using types
-type
-  primal* = ref object
-    isPrime*: bool
-    value*: int
-]#
-
+#Also just copy pasted and adapted from geeksforgeeks
 # A function to print all prime factors of
 # a given number n
 proc primeFactors(target: int64): seq[int64] =
