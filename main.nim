@@ -84,16 +84,16 @@ proc primeFactors(target: int64): seq[int64] =
   # Print the number of two's that divide n
   while n mod 2 == 0:
     result.add(2)
-    n = int64(float64(n) / 2)
+    n = (n.float64 / 2).int64
          
     # n must be odd at this point
     # so a skip of 2 ( i = i + 2) can be used
   let step = int64(sqrt(float64(n))) + 1
-  for i in countup(int64(3), step, int64(2)):
+  for i in countup(3i64, step, 2i64):
     # while i divides n , print i and divide n
     while n mod i == 0:
       result.add(i)
-      n = int64(float64(n) / float64(i))
+      n = (n.float64 / i.float64).int64
            
   # Condition if n is a prime
   # number greater than 2
