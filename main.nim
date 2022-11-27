@@ -88,8 +88,8 @@ proc primeFactors(target: int64): seq[int64] =
          
     # n must be odd at this point
     # so a skip of 2 ( i = i + 2) can be used
-  let step = int64(sqrt(float64(n))) + 1
-  for i in countup(3i64, step, 2i64):
+  let top = sqrt(n.float64).int64 + 1
+  for i in countup(3i64, top, 2i64):
     # while i divides n , print i and divide n
     while n mod i == 0:
       result.add(i)
