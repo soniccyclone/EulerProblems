@@ -3,11 +3,9 @@ import std/sugar
 import std/math
   
 proc basedSum(bases: seq[int], collection: seq[int]): int =
-  return collection
-        .filter(num =>
-                bases.any(base =>
-                          num mod base == 0))
-        .foldl(a + b, 0)
+  collection
+    .filter(num => bases.any(base => num mod base == 0))
+    .foldl(a + b, 0)
 
 proc limitedFib(limit: int): seq[int] =
   result = @[1, 2]
